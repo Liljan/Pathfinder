@@ -1,5 +1,7 @@
 #include "SFML/Graphics.hpp"
 
+#include "PathFinder.h"
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "My window");
@@ -24,6 +26,15 @@ int main()
 
 		// draw everything here...
 		// window.draw(...);
+
+		sf::RectangleShape myRect(sf::Vector2f(130, 100));
+		myRect.setPosition(sf::Vector2f(300, 400));
+
+		myRect.setFillColor(sf::Color(25,25,25,255));
+		myRect.setOutlineColor(sf::Color(240, 0, 0, 255));
+		myRect.setOutlineThickness(2.0f);
+
+		window.draw(myRect);
 
 		// end the current frame
 		window.display();
