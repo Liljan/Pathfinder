@@ -36,10 +36,18 @@ public:
 
 	void Setup(const sf::Vector2i start, const sf::Vector2i end, const float wallChance);
 
-	std::vector<Node> grid;
+	bool Solve();
+
+	Node* GetNode(int x, int y);
+
+	size_t m_Width;
+	size_t m_Height;
+	std::vector<Node> m_Grid;
 
 private:
-	std::vector<Node*> openNodes;
-	std::vector<Node*> visitedNodes;
-};
+	std::vector<Node*> m_OpenNodes;
+	std::vector<Node*> m_VisitedNodes;
 
+	Node* m_pStart = nullptr;
+	Node* m_pGoal = nullptr;
+};
