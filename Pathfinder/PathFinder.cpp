@@ -57,15 +57,15 @@ bool PathFinder::Solve()
 		return pNode0->f < pNode1->f;
 	});
 
-	Node* pCurrentNode = *itNode;
+	m_pCurrentNode = *itNode;
 
-	if(pCurrentNode == m_pGoal)
+	if(m_pCurrentNode == m_pGoal)
 		return true;
 	
 	m_OpenNodes.erase(itNode);
-	m_ClosedNodes.push_back(pCurrentNode);
+	m_ClosedNodes.push_back(m_pCurrentNode);
 	
-	for(Node* pNeighbor : pCurrentNode->neighbors)
+	for(Node* pNeighbor : m_pCurrentNode->neighbors)
 	{
 		bool isNewPath = false;
 
@@ -75,7 +75,7 @@ bool PathFinder::Solve()
 		if(std::find(m_ClosedNodes.begin(), m_ClosedNodes.end(), pNeighbor) != m_ClosedNodes.end())
 			continue;
 
-		float tempG = pCurrentNode->g + 1;
+		float tempG = m_pCurrentNode->g + 1;
 
 		if(std::find(m_OpenNodes.begin(), m_OpenNodes.end(), pNeighbor) != m_OpenNodes.end())
 		{
@@ -96,7 +96,7 @@ bool PathFinder::Solve()
 		{
 			pNeighbor->h = Heuristic(*pNeighbor, *m_pGoal);
 			pNeighbor->f = pNeighbor->g + pNeighbor->h;
-			pNeighbor->pPrevious = pCurrentNode;
+			pNeighbor->pPrevious = m_pCurrentNode;
 		}
 	}
 

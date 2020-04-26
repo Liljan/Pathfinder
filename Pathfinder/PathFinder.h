@@ -47,6 +47,7 @@ public:
 	const std::vector<Node*> GetClosedNodes() { return m_ClosedNodes; }
 	const Node* GetStartNode() { return m_pStart; }
 	const Node* GetGoalNode() { return m_pGoal; }
+	const Node* GetCurrentNode() { return m_pCurrentNode; }
 
 	size_t m_Width;
 	size_t m_Height;
@@ -60,4 +61,5 @@ private:
 
 	Node* m_pStart = nullptr;
 	Node* m_pGoal = nullptr;
+	Node* m_pCurrentNode = nullptr;
 };
