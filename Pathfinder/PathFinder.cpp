@@ -61,53 +61,65 @@ bool PathFinder::Solve()
 
 	if(pCurrentNode == m_pGoal)
 		return true;
-
-	m_VisitedNodes.push_back(pCurrentNode);
+	
 	m_OpenNodes.erase(itNode);
-
+	m_ClosedNodes.push_back(pCurrentNode);
+	
 	for(Node* pNeighbor : pCurrentNode->neighbors)
 	{
+		bool isNewPath = false;
 
+		if(pNeighbor->isWall)
+			continue;
+
+		if(std::find(m_ClosedNodes.begin(), m_ClosedNodes.end(), pNeighbor) != m_ClosedNodes.end())
+			continue;
+
+		float tempG = pCurrentNode->g + 1;
+
+		if(std::find(m_OpenNodes.begin(), m_OpenNodes.end(), pNeighbor) != m_OpenNodes.end())
+		{
+			if(tempG < pNeighbor->g)
+			{
+				pNeighbor->g = tempG;
+				isNewPath = true;
+			}
+		}
+		else
+		{
+			pNeighbor->g = tempG;
+			m_OpenNodes.push_back(pNeighbor);
+			isNewPath = true;
+		}
+
+		if(isNewPath)
+		{
+			pNeighbor->h = Heuristic(*pNeighbor, *m_pGoal);
+			pNeighbor->f = pNeighbor->g + pNeighbor->h;
+			pNeighbor->pPrevious = pCurrentNode;
+		}
 	}
 
-	/*	for(var i = 0; i < current.neighbors.length; ++i)
-		{
-			var neighbor = current.neighbors[i];
-
-			var newPath = false;
-
-			if(neighbor.wall)
-				continue;
-
-			if(closedList.includes(neighbor))
-				continue;
-
-			var tempG = current.g + 1;
-
-			if(openList.includes(neighbor))
-			{
-				if(tempG < neighbor.g)
-				{
-					neighbor.g = tempG;
-					newPath = true;
-				}
-			}
-			else
-			{
-				neighbor.g = tempG;
-				openList.push(neighbor);
-				newPath = true;
-			}
-
-			if(newPath)
-			{
-				neighbor.h = heuristic(neighbor, end);
-				neighbor.f = neighbor.g + neighbor.h;
-				neighbor.previous = current;
-			}
-		}*/
-
 	return false;
+}
+
+const float PathFinder::Heuristic(const Node& n1, const Node& n2) const
+{
+	return EuclidianDistance(n1, n2);
+	// return ManhattanDistance(n1, n2);
+}
+
+const float PathFinder::ManhattanDistance(const Node & n1, const Node & n2) const
+{
+	return fabs(n1.coordinates.x - n2.coordinates.x) + fabs(n1.coordinates.y - n2.coordinates.y);
+}
+
+const float PathFinder::EuclidianDistance(const Node & n1, const Node & n2) const
+{
+	const float dx = n1.coordinates.x - n2.coordinates.x;
+	const float dy = n1.coordinates.y - n2.coordinates.y;
+	
+	return sqrtf(dx * dx + dy * dy);
 }
 
 Node* PathFinder::GetNode(int x, int y)

@@ -38,15 +38,25 @@ public:
 
 	bool Solve();
 
-	Node* GetNode(int x, int y);
+	const float Heuristic(const Node& n1, const Node& n2) const;
+	const float ManhattanDistance(const Node& n1, const Node& n2) const;
+	const float EuclidianDistance(const Node& n1, const Node& n2) const;
+
+	// For rendering, maybe kinda bad
+	const std::vector<Node*> GetOpenNodes() { return m_OpenNodes; }
+	const std::vector<Node*> GetClosedNodes() { return m_ClosedNodes; }
+	const Node* GetStartNode() { return m_pStart; }
+	const Node* GetGoalNode() { return m_pGoal; }
 
 	size_t m_Width;
 	size_t m_Height;
 	std::vector<Node> m_Grid;
 
 private:
+	Node* GetNode(int x, int y);
+
 	std::vector<Node*> m_OpenNodes;
-	std::vector<Node*> m_VisitedNodes;
+	std::vector<Node*> m_ClosedNodes;
 
 	Node* m_pStart = nullptr;
 	Node* m_pGoal = nullptr;
