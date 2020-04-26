@@ -17,8 +17,17 @@ void DrawPathFinder(sf::RenderWindow& window, PathFinder& pathFinder)
 		sf::RectangleShape rect(sf::Vector2f(width, height));
 		rect.setPosition(sf::Vector2f(x, y));
 
-		rect.setFillColor(sf::Color(25, 25, 25, 255));
-		rect.setOutlineColor(sf::Color(50, 50, 50, 255));
+		if(node.isWall)
+		{
+			rect.setFillColor(sf::Color(0, 0, 0, 255));
+			rect.setOutlineColor(sf::Color(50, 50, 50, 255));
+		}
+		else
+		{
+			rect.setFillColor(sf::Color(25, 25, 25, 255));
+			rect.setOutlineColor(sf::Color(50, 50, 50, 255));
+		}
+
 		rect.setOutlineThickness(2.0f);
 
 		window.draw(rect);
